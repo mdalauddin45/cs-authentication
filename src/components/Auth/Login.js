@@ -4,15 +4,23 @@ import { Link } from "react-router-dom";
 import "../../styles/login.css";
 
 const Login = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+  };
+
   return (
     <div className="login-container">
       <div className="login-title">
         Login
         <BiLogInCircle />
       </div>
-      <form className="login-form">
-        <input type="text" placeholder="Your Email" />
-        <input type="password" placeholder="password" />
+      <form className="login-form" onSubmit={handleSubmit}>
+        <input type="text" name="email" placeholder="Your Email" />
+        <input type="password" name="password" placeholder="password" />
         <button>Login</button>
 
         <p>
