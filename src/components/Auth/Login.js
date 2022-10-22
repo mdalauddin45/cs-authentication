@@ -21,15 +21,22 @@ const Login = () => {
   };
 
   const handleEmailChange = (e) => {
-    setUserInfo({ ...userInfo, email: e.target.value });
+    const email = e.target.value;
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      setError({ ...error, email: "Provide a valid email" });
+      setUserInfo({ ...userInfo, email: e.target.value });
+    } else {
+      setError({ ...error, email: "" });
+      setUserInfo({ ...userInfo, email: e.target.value });
+    }
   };
   const handlePasswordChange = (e) => {
     const password = e.target.value;
-    if (password) {
-      setError("must be at last 6 character");
+    if (password.length < 6) {
+      setError({ ...error, password: "must be at last 6 character" });
       setUserInfo({ ...userInfo, password: e.target.value });
     } else {
-      setError("");
+      setError({ ...error, password: "" });
       setUserInfo({ ...userInfo, password: e.target.value });
     }
   };
@@ -47,6 +54,7 @@ const Login = () => {
           value={userInfo.email}
           onChange={handleEmailChange}
         />
+        {error.email && <span className="error-message">{error.email} </span>}
         <input
           type="password"
           name="password"
@@ -54,12 +62,8 @@ const Login = () => {
           value={userInfo.password}
           onChange={handlePasswordChange}
         />
-        {userInfo.password.length > 6 ? (
-          <>{}</>
-        ) : (
-          <>
-            <p className="error-message">{error}</p>
-          </>
+        {error.password && (
+          <span className="error-message">{error.password} </span>
         )}
         <button>Login</button>
 
