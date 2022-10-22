@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { BiLogInCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/authContext";
 import "../../styles/login.css";
 
 const Login = () => {
+  const { signIn } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -14,10 +16,16 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    console.log(email, password);
+    signIn(userInfo.email, userInfo.password)
+      .then((result) => {
+        // Signed in
+        const user = result.user;
+        console.log(user);
+        toast.success("log in successfuly");
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   };
 
   const handleEmailChange = (e) => {
